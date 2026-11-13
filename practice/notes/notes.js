@@ -4,7 +4,9 @@ function saveToStorage(key, data) {
 
 function getFromStorage(key, defaultValue) {
   const data = localStorage.getItem(key);
-  if (data === null) return defaultValue;
+  if (data === null) {
+    return defaultValue;
+  }
   try {
     return JSON.parse(data);
   } catch {
@@ -14,18 +16,6 @@ function getFromStorage(key, defaultValue) {
 
 let notes = getFromStorage("notes", []);
 const noteList = document.getElementById("note-list");
-
-function render() {
-  noteList.innerHTML = "";
-
-  notes.forEach((note) => {
-    const li = document.createElement("li");
-    li.textContent = note.text;
-    noteList.appendChild(li);
-  });
-}
-
-render();
 function commit() {
   saveToStorage("notes", notes);
   render();
@@ -39,7 +29,9 @@ const addBtn = document.getElementById("add-btn");
 
 addBtn.addEventListener("click", () => {
   const text = noteInput.value.trim();
-  if (text === "") return;
+  if (text === "") {
+    return;
+  }
   addNote(text);
   noteInput.value = "";
 });
