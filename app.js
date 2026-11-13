@@ -1,4 +1,19 @@
-// Select HTML elements
+// ---------- Storage helpers ----------
+function saveToStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+function getFromStorage(key, defaultValue) {
+    const data = localStorage.getItem(key);
+    if (data === null) return defaultValue;
+    try {
+        return JSON.parse(data);
+    } catch {
+        return defaultValue;
+    }
+}
+
+// ---------- Select HTML elements ----------
 const todoForm = document.querySelector("#todo-form");
 const taskInput = document.querySelector("#task-input");
 const taskList = document.querySelector("#task-list");
@@ -6,107 +21,109 @@ const itemsLeft = document.querySelector("#items-left");
 const clearCompletedBtn = document.querySelector("#clear-completed");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
-// Store tasks in an array
-let tasks = [];
-let currentFilter = "all";
+// ---------- State ----------
+const STORAGE_KEY = "todos";
+let todos = getFromStorage(STORAGE_KEY, []); // load ONCE at startup
+let currentFilter = getFromStorage("filter", "all");
 
-// Add a new task
+// Save, then redraw
+function commit() {
+    saveToStorage(STORAGE_KEY, todos);
+    saveToStorage("filter", currentFilter);
+    renderTasks();
+}
+
+// ---------- Add a new task ----------
 todoForm.addEventListener("submit", function (event) {
-event.preventDefault();
+    event.preventDefault();
 
-const taskText = taskInput.value.trim();
+    const taskText = taskInput.value.trim();
 
-if (taskText === "") {
-    alert("Please enter a task!");
-    return;
-}
+    if (taskText === "") {
+        alert("Please enter a task!");
+        return;
+    }
 
-const newTask = {
-    id: Date.now(),
-    text: taskText,
-    completed: false
-};
+    const newTask = {
+        id: Date.now(),
+        text: taskText,
+        completed: false,
+    };
 
-tasks.push(newTask);
+    todos = [...todos, newTask];
+    taskInput.value = "";
 
-taskInput.value = "";
-
-renderTasks();
-
+    commit();
 });
 
-// Display tasks
+// ---------- Display tasks ----------
 function renderTasks() {
-taskList.textContent = "";
+    taskList.textContent = "";
 
-const filteredTasks = tasks.filter(function (task) {
-    if (currentFilter === "active") {
-        return !task.completed;
-    }
+    const filteredTasks = todos.filter(function (task) {
+        if (currentFilter === "active") {
+            return !task.completed;
+        }
 
-    if (currentFilter === "completed") {
-        return task.completed;
-    }
+        if (currentFilter === "completed") {
+            return task.completed;
+        }
 
-    return true;
-});
+        return true;
+    });
 
-filteredTasks.forEach(function (task) {
-    const li = document.createElement("li");
-    li.classList.add("task-item");
+    filteredTasks.forEach(function (task) {
+        const li = document.createElement("li");
+        li.classList.add("task-item");
 
-    if (task.completed) {
-        li.classList.add("completed");
-    }
+        if (task.completed) {
+            li.classList.add("completed");
+        }
 
-    li.dataset.id = task.id;
+        li.dataset.id = task.id;
 
-    const span = document.createElement("span");
-    span.classList.add("task-text");
-    span.textContent = task.text;
+        const span = document.createElement("span");
+        span.classList.add("task-text");
+        span.textContent = task.text;
 
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.classList.add("delete-btn");
-    deleteButton.type = "button";
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("delete-btn");
+        deleteButton.type = "button";
 
-    li.appendChild(span);
-    li.appendChild(deleteButton);
+        li.appendChild(span);
+        li.appendChild(deleteButton);
 
-    taskList.appendChild(li);
-});
+        taskList.appendChild(li);
+    });
 
-updateItemsLeft();
-
+    updateItemsLeft();
 }
 
-// Event delegation for completing and deleting tasks
+// ---------- Complete and delete (event delegation) ----------
 taskList.addEventListener("click", function (event) {
-const li = event.target.closest(".task-item");
+    const li = event.target.closest(".task-item");
 
-if (!li) {
-    return;
-}
+    if (!li) {
+        return;
+    }
 
-const taskId = Number(li.dataset.id);
+    const taskId = Number(li.dataset.id);
 
-if (event.target.classList.contains("delete-btn")) {
-    tasks = tasks.filter(function (task) {
-        return task.id !== taskId;
-    });
-} else if (event.target.classList.contains("task-text")) {
-    const task = tasks.find(function (task) {
-        return task.id === taskId;
-    });
+    if (event.target.classList.contains("delete-btn")) {
+        todos = todos.filter(function (task) {
+            return task.id !== taskId;
+        });
+    } else if (event.target.classList.contains("task-text")) {
+        todos = todos.map(function (task) {
+            return task.id === taskId ? { ...task, completed: !task.completed } : task;
+        });
+    }
 
-    task.completed = !task.completed;
-}
-
-renderTasks();
-
+    commit();
 });
 
-// Edit tasks using double-click
+// ---------- Edit tasks with double-click ----------
 taskList.addEventListener("dblclick", function (event) {
     if (!event.target.classList.contains("task-text")) {
         return;
@@ -115,7 +132,7 @@ taskList.addEventListener("dblclick", function (event) {
     const li = event.target.closest(".task-item");
     const taskId = Number(li.dataset.id);
 
-    const task = tasks.find(function (task) {
+    const task = todos.find(function (task) {
         return task.id === taskId;
     });
 
@@ -136,10 +153,12 @@ taskList.addEventListener("dblclick", function (event) {
             const updatedText = editInput.value.trim();
 
             if (updatedText !== "") {
-                task.text = updatedText;
+                todos = todos.map(function (t) {
+                    return t.id === taskId ? { ...t, text: updatedText } : t;
+                });
             }
 
-            renderTasks();
+            commit();
         }
 
         if (e.key === "Escape") {
@@ -148,41 +167,43 @@ taskList.addEventListener("dblclick", function (event) {
     });
 });
 
-// Filter tasks
+// ---------- Filter tasks ----------
 filterButtons.forEach(function (button) {
-button.addEventListener("click", function () {
-currentFilter = button.dataset.filter;
+    button.addEventListener("click", function () {
+        currentFilter = button.dataset.filter;
 
-    filterButtons.forEach(function (btn) {
-        btn.classList.remove("active");
+        filterButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        commit();
     });
-
-    button.classList.add("active");
-
-    renderTasks();
 });
 
-});
-
-// Count remaining tasks
+// ---------- Count remaining tasks ----------
 function updateItemsLeft() {
-const remainingTasks = tasks.filter(function (task) {
-return !task.completed;
-}).length;
+    const remainingTasks = todos.filter(function (task) {
+        return !task.completed;
+    }).length;
 
-itemsLeft.textContent = `${remainingTasks} ${remainingTasks === 1 ? "item" : "items"} left`;
-
+    itemsLeft.textContent = `${remainingTasks} ${remainingTasks === 1 ? "item" : "items"} left`;
 }
 
-// Clear completed tasks
+// ---------- Clear completed tasks ----------
 clearCompletedBtn.addEventListener("click", function () {
-tasks = tasks.filter(function (task) {
-return !task.completed;
+    todos = todos.filter(function (task) {
+        return !task.completed;
+    });
+
+    commit();
 });
 
-renderTasks();
-
+// Highlight the button that matches the saved filter
+filterButtons.forEach(function (btn) {
+    btn.classList.toggle("active", btn.dataset.filter === currentFilter);
 });
 
-// Initial display
+// ---------- Initial display ----------
 renderTasks();
