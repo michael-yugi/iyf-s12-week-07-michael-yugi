@@ -1,4 +1,4 @@
-Week 7: JavaScript Best Practices
+## Week 7: JavaScript Best Practices
 
 A refactor of my Week 5 To-Do List into a persistent, modular, linted and tested application, plus the supporting exercises for Lessons 13 and 14.
 
@@ -60,7 +60,7 @@ node_modules/ is not committed; npm install recreates it from package-lock.json.
 
 Run the app: open the project folder in VS Code and start Live Server on index.html. ES modules do not load from a file:// address, so double-clicking the file will not work.
 
-npm scripts
+## npm scripts
 Command	What it does
 npm test	Runs the Vitest unit tests once
 npm run lint	Checks the code with ESLint
@@ -79,7 +79,8 @@ Edge cases: empty or whitespace-only text, an ID that does not exist, an empty l
 Immutability: tests confirm the original array and todo objects are not modified
 bash
 npm test
-Lesson 13: Local Storage and State Management
+
+## Lesson 13: Local Storage and State Management
 Task	Description	Location
 13.1	localStorage basics, JSON, helper functions, notes app	lessons/notes/
 13.2	Persistent To-Do List (todos, completed state, delete, filter)	Root and js/
@@ -91,14 +92,16 @@ Product list with "Add to Cart"
 Add items, change quantity, remove items, clear the cart
 Item count and total are calculated from the cart, never stored, so they cannot go out of sync
 Only { productId, quantity } is saved to localStorage; the cart survives a refresh
-Lesson 14: Code Quality
+
+## Lesson 14: Code Quality
 Task	Description	Location
 14.1	Modular code organisation	js/
 14.2	Clean code: names, single responsibility, no magic numbers	lessons/clean-code/
 14.3	Debugging: console methods, breakpoints, bug hunt	lessons/clean-code/
 14.4	ESLint and Prettier setup	Repo root
 14.5	Unit tests	tests/
-Daily challenges
+
+## Daily challenges
 Day	Challenge	Status
 1	Theme persistence	[ ]
 2	Recent searches (last 5)	[ ]
@@ -108,15 +111,7 @@ Day	Challenge	Status
 
 Each challenge lives in its own folder under daily-challenges/.
 
-Collaboration
-
-My pull request: Refactor: modules, persistence, lint and tests. Branch refactor/modules into main.
-
-My review of a classmate's PR: Review of @CLASSMATE-USERNAME (Link copied from one of my inline comments: hover the comment, then ..., then Copy link.)
-
-Review received: SHORT NOTE ON WHAT THE REVIEWER FLAGGED AND HOW YOU RESPONDED, OR NAME WHO DID NOT REVIEW.
-
-What I learned
+## What I learned
 Persisting state with localStorage, and why parsing stored data must be guarded with try/catch
 Keeping a single source of truth and saving after every change
 Separating pure logic from DOM and storage code so it can be tested
