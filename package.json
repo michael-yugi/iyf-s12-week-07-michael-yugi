@@ -1,0 +1,31 @@
+{
+  "name": "iyf-s12-week-07-michael-yugi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,html,css}\"",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michael-yugi/iyf-s12-week-07-michael-yugi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/michael-yugi/iyf-s12-week-07-michael-yugi/issues"
+  },
+  "homepage": "https://github.com/michael-yugi/iyf-s12-week-07-michael-yugi#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
+    "vitest": "^5.1.0"
+  }
+}
