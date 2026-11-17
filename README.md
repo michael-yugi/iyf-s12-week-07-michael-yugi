@@ -61,6 +61,7 @@ node_modules/ is not committed; npm install recreates it from package-lock.json.
 Run the app: open the project folder in VS Code and start Live Server on index.html. ES modules do not load from a file:// address, so double-clicking the file will not work.
 
 ## npm scripts
+
 Command	What it does
 npm test	Runs the Vitest unit tests once
 npm run lint	Checks the code with ESLint
@@ -71,9 +72,7 @@ ESLint 9+ with a flat config (eslint.config.js), including no-var, eqeqeq, curly
 Prettier (.prettierrc): 4-space indent, double quotes, 100-character lines
 Vitest for unit tests
 Testing
-
 tests/todo-logic.test.js contains 15 tests covering every exported function in todo-logic.js:
-
 Behaviour: adding, toggling, editing, deleting, filtering, counting and clearing completed
 Edge cases: empty or whitespace-only text, an ID that does not exist, an empty list
 Immutability: tests confirm the original array and todo objects are not modified
@@ -81,6 +80,7 @@ bash
 npm test
 
 ## Lesson 13: Local Storage and State Management
+
 Task	Description	Location
 13.1	localStorage basics, JSON, helper functions, notes app	lessons/notes/
 13.2	Persistent To-Do List (todos, completed state, delete, filter)	Root and js/
@@ -94,6 +94,7 @@ Item count and total are calculated from the cart, never stored, so they cannot 
 Only { productId, quantity } is saved to localStorage; the cart survives a refresh
 
 ## Lesson 14: Code Quality
+
 Task	Description	Location
 14.1	Modular code organisation	js/
 14.2	Clean code: names, single responsibility, no magic numbers	lessons/clean-code/
@@ -102,6 +103,7 @@ Task	Description	Location
 14.5	Unit tests	tests/
 
 ## Daily challenges
+
 Day	Challenge	Status
 1	Theme persistence	[ ]
 2	Recent searches (last 5)	[ ]
@@ -109,11 +111,14 @@ Day	Challenge	Status
 4	Refactor challenge	[ ]
 5	Code review of Weather Dashboard	[ ]
 
-Each challenge lives in its own folder under daily-challenges/.
-
 ## What I learned
 Persisting state with localStorage, and why parsing stored data must be guarded with try/catch
 Keeping a single source of truth and saving after every change
 Separating pure logic from DOM and storage code so it can be tested
 Setting up ESLint (flat config), Prettier and Vitest with npm
 Reviewing code against a checklist and responding to review feedback with commits
+
+## collaboration
+Partner: @Gitau0076-cpu
+PR I opened: michael-yugi/iyf-s12-week-07-michael-yugi#3
+PR I reviewed: https://github.com/gitau0076-cpu/iyf-s12-week-07-gitau0076-cpu/pull/4
