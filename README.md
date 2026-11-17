@@ -1,9 +1,5 @@
 # IYF Season 12 – Week 7: JavaScript Best Practices
 
-**Student:** Michael Yugi  
-**Repository:** `iyf-s12-week-07-michael-yugi`  
-**Course:** IYF Weekend Academy – Season 12  
-**Week:** 7  
 **Main Topics:** JavaScript Best Practices, Local Storage, State Management, Modular JavaScript, Code Quality and Unit Testing.
 
 ---
