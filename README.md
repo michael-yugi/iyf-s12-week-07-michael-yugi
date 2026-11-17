@@ -63,6 +63,7 @@ Run the app: open the project folder in VS Code and start Live Server on index.h
 ## npm scripts
 
 Command	What it does
+
 npm test	Runs the Vitest unit tests once
 npm run lint	Checks the code with ESLint
 npm run lint: fix	Fixes auto-fixable lint problems
