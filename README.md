@@ -121,5 +121,7 @@ Reviewing code against a checklist and responding to review feedback with commit
 
 ## collaboration
 Partner: @Gitau0076-cpu
+
 PR I opened: michael-yugi/iyf-s12-week-07-michael-yugi#3
+
 PR I reviewed: https://github.com/gitau0076-cpu/iyf-s12-week-07-gitau0076-cpu/pull/4
